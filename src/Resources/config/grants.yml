@@ -1,0 +1,26 @@
+services:
+
+    # Grant registry
+    kr.oauth_server.grant_registry:
+        class: Kr\OAuthServerBundle\Grant\DependencyInjection\GrantRegistry
+        calls:
+            - [addGrant, ["authorization_code", "@kr.oauth_server.grant.authorization_code"]]
+            - [addGrant, ["refresh_token", "@kr.oauth_server.grant.refresh_token"]]
+            - [addGrant, ["client_credentials", "@kr.oauth_server.grant.client_credentials"]]
+
+    # Grants
+    kr.oauth_server.grant.authorization_code:
+        class: Kr\OAuthServerBundle\Grant\AuthorizationCode
+        tags:
+            - { name: kr.oauth_server.grant, type: authorization_code }
+
+    kr.oauth_server.grant.refresh_token:
+        class: Kr\OAuthServerBundle\Grant\RefreshToken
+        tags:
+            - { name: kr.oauth_server.grant, type: refresh_token }
+
+    kr.oauth_server.grant.client_credentials:
+        class: Kr\OAuthServerBundle\Grant\ClientCredentials
+        tags:
+            - { name: kr.oauth_server.grant, type: client_credentials }
+

@@ -1,0 +1,64 @@
+services:
+
+    kr.oauth_server.security.utils.random:
+        class: Kr\OAuthServerBundle\Security\Utils\Random
+
+
+
+    # Access token security
+    access_token.security.authentication.provider:
+        class: Kr\OAuthServerBundle\Security\Authentication\Provider\AccessTokenProvider
+        arguments:
+            - "@kr.oauth_server.repository.access_token"
+        public: false
+
+    access_token.security.authentication.listener:
+        class: Kr\OAuthServerBundle\Security\Firewall\AccessTokenListener
+        arguments:
+            - "@security.token_storage"
+            - "@security.authentication.manager"
+        public: false
+
+    # Grant request security
+    grant_request.security.authentication.provider:
+        class: Kr\OAuthServerBundle\Security\Authentication\Provider\GrantRequestProvider
+        public: false
+        calls:
+            - [addProvider, ["@kr.oauth_server.authentication_provider.authorization_code"]]
+            - [addProvider, ["@kr.oauth_server.authentication_provider.refresh_token"]]
+            - [addProvider, ["@kr.oauth_server.authentication_provider.client_credentials"]]
+
+    # Grant authentication providers
+
+    kr.oauth_server.authentication_provider.authorization_code:
+        class: Kr\OAuthServerBundle\Security\Authentication\Provider\AuthorizationCodeProvider
+        arguments:
+            - "@kr.oauth_server.repository.client"
+            - "@kr.oauth_server.repository.authorization_code"
+        calls:
+            - [setLogger, ["@logger"]]
+
+    kr.oauth_server.authentication_provider.client_credentials:
+        class: Kr\OAuthServerBundle\Security\Authentication\Provider\ClientCredentialsProvider
+        arguments:
+            - "@kr.oauth_server.repository.client"
+        calls:
+            - [setLogger, ["@logger"]]
+
+    kr.oauth_server.authentication_provider.refresh_token:
+        class: Kr\OAuthServerBundle\Security\Authentication\Provider\RefreshTokenProvider
+        arguments:
+            - "@kr.oauth_server.repository.client"
+            - "@kr.oauth_server.repository.refresh_token"
+        calls:
+            - [setLogger, ["@logger"]]
+
+    # Grant request listener
+
+    grant_request.security.authentication.listener:
+        class: Kr\OAuthServerBundle\Security\Firewall\GrantRequestListener
+        arguments:
+            - "@kr.oauth_server.grant_registry"
+            - "@security.token_storage"
+            - "@security.authentication.manager"
+        public: false

@@ -1,0 +1,16 @@
+services:
+    kr.oauth_server.repository.access_token:
+        class: Kr\OAuthServerBundle\Repository\AccessTokenRepository
+        factory: ["@kr.oauth_server.manager.access_token", getRepository]
+
+    kr.oauth_server.repository.client:
+        class: Kr\OAuthServerBundle\Repository\AuthorizationCodeRepository
+        factory: ["@kr.oauth_server.manager.client", getRepository]
+
+    kr.oauth_server.repository.authorization_code:
+        class: Kr\OAuthServerBundle\Repository\AuthorizationCodeRepository
+        factory: ["@kr.oauth_server.manager.authorization_code", getRepository]
+
+    kr.oauth_server.repository.refresh_token:
+        class: Kr\OAuthServerBundle\Repository\RefreshTokenRepository
+        factory: ["@kr.oauth_server.manager.refresh_token", getRepository]

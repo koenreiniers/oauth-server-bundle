@@ -1,0 +1,20 @@
+{
+    "name": "koenreiniers/oauth-server-bundle",
+    "type": "symfony-bundle",
+    "description": "",
+    "keywords": ["oauth", "server", "bundle"],
+    "homepage": "http://www.koenreiniers.nl/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Koen Reiniers",
+            "email": "contact@koenreiniers.nl",
+            "homepage": "http://www.koenreiniers.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kr\\OAuthServerBundle\\": "src/"
+        }
+    }
+}

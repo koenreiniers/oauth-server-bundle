@@ -1,0 +1,22 @@
+services:
+    kr.oauth_server.event_subscriber.token_response:
+        class: Kr\OAuthServerBundle\EventListener\TokenResponseSubscriber
+        arguments:
+            - "@kr.oauth_server.manager.access_token"
+            - "@kr.oauth_server.manager.refresh_token"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    kr.oauth_server.event_subscriber.code_response:
+        class: Kr\OAuthServerBundle\EventListener\CodeResponseSubscriber
+        arguments:
+            - "@kr.oauth_server.manager.authorization_code"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    kr.oauth_server.event_listener.exception:
+        class: Kr\OAuthServerBundle\EventListener\ExceptionListener
+        arguments:
+            - "@kr.oauth_server.manager.authorization_code"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

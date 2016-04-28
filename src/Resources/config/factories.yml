@@ -1,0 +1,48 @@
+parameters:
+    kr.oauth_server.access_token.lifetime:        3600      # One hour
+    kr.oauth_server.access_token.length:          20
+
+    kr.oauth_server.refresh_token.lifetime:       1209600   # Two weeks
+    kr.oauth_server.refresh_token.length:         20
+
+    kr.oauth_server.authorization_code.lifetime:  600        # One minute
+    kr.oauth_server.authorization_code.length:    20
+
+    kr.oauth_server.client.secret_length:         20
+    kr.oauth_server.client.default_grant_types:   ["authorization_code", "refresh_token"]
+
+services:
+
+
+    kr.oauth_server.factory.access_token:
+        class: Kr\OAuthServerBundle\Manager\Factory\TokenFactory
+        arguments:
+            - "@kr.oauth_server.security.utils.random"
+            - %kr.oauth_server.access_token.lifetime%
+            - %kr.oauth_server.access_token.length%
+        public: false
+
+    kr.oauth_server.factory.refresh_token:
+        class: Kr\OAuthServerBundle\Manager\Factory\TokenFactory
+        arguments:
+            - "@kr.oauth_server.security.utils.random"
+            - %kr.oauth_server.refresh_token.lifetime%
+            - %kr.oauth_server.refresh_token.length%
+        public: false
+
+    kr.oauth_server.factory.authorization_code:
+        class: Kr\OAuthServerBundle\Manager\Factory\AuthorizationCodeFactory
+        arguments:
+            - "@kr.oauth_server.security.utils.random"
+            - %kr.oauth_server.authorization_code.lifetime%
+            - %kr.oauth_server.authorization_code.length%
+        public: false
+
+    kr.oauth_server.factory.client:
+        class: Kr\OAuthServerBundle\Manager\Factory\ClientFactory
+        arguments:
+            - "@kr.oauth_server.security.utils.random"
+            - %kr.oauth_server.client.default_grant_types%
+            - %kr.oauth_server.client.secret_length%
+        public: false
+

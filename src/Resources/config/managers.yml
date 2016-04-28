@@ -1,0 +1,35 @@
+parameters:
+    kr.oauth_server.access_token.class:           Kr\OAuthServerBundle\Entity\AccessToken
+    kr.oauth_server.refresh_token.class:          Kr\OAuthServerBundle\Entity\RefreshToken
+    kr.oauth_server.authorization_code.class:     Kr\OAuthServerBundle\Entity\AuthorizationCode
+    kr.oauth_server.client.class:                 Kr\OAuthServerBundle\Entity\Client
+
+services:
+
+    kr.oauth_server.manager.client:
+        class: Kr\OAuthServerBundle\Manager\ClientManager
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@kr.oauth_server.factory.client"
+            - "%kr.oauth_server.client.class%"
+
+    kr.oauth_server.manager.authorization_code:
+        class: Kr\OAuthServerBundle\Manager\AuthorizationCodeManager
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@kr.oauth_server.factory.authorization_code"
+            - "%kr.oauth_server.authorization_code.class%"
+
+    kr.oauth_server.manager.access_token:
+        class: Kr\OAuthServerBundle\Manager\AccessTokenManager
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@kr.oauth_server.factory.access_token"
+            - "%kr.oauth_server.access_token.class%"
+
+    kr.oauth_server.manager.refresh_token:
+        class: Kr\OAuthServerBundle\Manager\RefreshTokenManager
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@kr.oauth_server.factory.refresh_token"
+            - "%kr.oauth_server.refresh_token.class%"
